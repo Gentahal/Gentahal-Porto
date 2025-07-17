@@ -56,14 +56,14 @@ export default function Profile() {
               </div>
               <span className="text-xl font-semibold text-gray-800">Genta Halilintar</span>
             </Link>
-            
+
             <div className="hidden md:flex items-center space-x-10">
               <Link href="/" className="text-gray-600 hover:text-blue-600 transition">Home</Link>
               <Link href="/profile" className="text-blue-600 font-medium relative">
                 Profile
                 <span className="absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></span>
               </Link>
-              <Link href="/projects" className="text-gray-600 hover:text-blue-600 transition">Work</Link>
+              <Link href="/work" className="text-gray-600 hover:text-blue-600 transition">Work</Link>
               <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition">Contact</Link>
             </div>
           </div>
@@ -75,7 +75,7 @@ export default function Profile() {
             {/* Foto Profil & Info Kontak */}
             <div className="md:w-1/3 lg:w-1/4">
               <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-xl mb-6">
-                <Image 
+                <Image
                   src="/images/profile1.jpeg"
                   alt="Genta Halilintar"
                   fill
@@ -83,47 +83,52 @@ export default function Profile() {
                   priority
                 />
               </div>
-              
+
               <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Contact Information</h3>
                 <ul className="space-y-3">
                   <ContactItem icon={<FiMail />} text="gentahalilintar36@gmail.com" />
-                  <ContactItem icon={<FiPhone />} text="+1 (555) 123-4567" />
-                  <ContactItem icon={<FiMapPin />} text="San Francisco, CA" />
+                  <ContactItem icon={<FiPhone />} text="+62 813 1560 3835" />
+                  <ContactItem icon={<FiMapPin />} text="Bandung, Indonesia" />
                 </ul>
-                
+
                 <div className="flex space-x-4 mt-6 pt-6 border-t border-gray-100">
-                  <SocialIcon href="#" icon={<FiLinkedin />} />
-                  <SocialIcon href="#" icon={<FiGithub />} />
+                  <SocialIcon href="https://www.linkedin.com/in/genta-halilintar/" icon={<FiLinkedin />} />
+                  <SocialIcon href="https://github.com/Gentahal" icon={<FiGithub />} />
                   <SocialIcon href="#" icon={<FiTwitter />} />
                 </div>
-                
-                <button className="mt-6 w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:shadow-md transition">
+
+                <a
+                  href="/resume/resume-genta.pdf"
+                  download
+                  className="mt-6 w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:shadow-md transition"
+                >
                   <FiDownload className="mr-2" />
                   Download CV
-                </button>
+                </a>
+
               </div>
             </div>
-            
+
             {/* Detail Profil */}
             <div className="md:w-2/3 lg:w-3/4 space-y-12">
               {/* Tentang Saya */}
               <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Genta Halilintar</h2>
                 <p className="text-lg text-blue-600 font-medium mb-6">Senior UX Designer & Frontend Developer</p>
-                
+
                 <div className="prose max-w-none text-gray-600">
                   <p>
-                    Passionate designer-developer hybrid with 8+ years of experience creating digital products that users love. 
+                    Passionate designer-developer hybrid with 8+ years of experience creating digital products that users love.
                     Specialized in bridging the gap between design and development to deliver seamless user experiences.
                   </p>
                   <p className="mt-4">
-                    My approach combines aesthetic sensibility with technical expertise, ensuring that beautiful designs are 
+                    My approach combines aesthetic sensibility with technical expertise, ensuring that beautiful designs are
                     implemented with precision and perform flawlessly across all devices.
                   </p>
                 </div>
               </div>
-              
+
               {/* Keahlian */}
               <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Skills & Expertise</h3>
@@ -135,8 +140,8 @@ export default function Profile() {
                         <span className="text-sm text-gray-500">{skill.level}%</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full" 
+                        <div
+                          className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full"
                           style={{ width: `${skill.level}%` }}
                         ></div>
                       </div>
@@ -144,7 +149,7 @@ export default function Profile() {
                   ))}
                 </div>
               </div>
-              
+
               {/* Pengalaman Kerja */}
               <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Professional Experience</h3>
@@ -164,7 +169,7 @@ export default function Profile() {
                   ))}
                 </div>
               </div>
-              
+
               {/* Pendidikan */}
               <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Education</h3>

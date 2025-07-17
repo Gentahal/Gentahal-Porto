@@ -37,7 +37,7 @@ export default function Home() {
             <div className="hidden md:flex items-center space-x-10">
               <NavLink href="/" text="Home" active />
               <NavLink href="/profile" text="Profile" />
-              <NavLink href="/projects" text="Work" />
+              <NavLink href="/work" text="Work" />
               <NavLink href="/contact" text="Contact" />
             </div>
             
@@ -71,7 +71,7 @@ export default function Home() {
               </p>
               
               <div className="flex flex-wrap gap-4 pt-4">
-                <GradientButton href="/projects" text="Explore My Work" icon={<FiArrowRight />} />
+                <GradientButton href="/work" text="Explore My Work" icon={<FiArrowRight />} />
                 <OutlineButton href="/contact" text="Let's Collaborate" />
               </div>
               
@@ -149,7 +149,7 @@ export default function Home() {
                 <ul className="space-y-3">
                   <FooterLink href="/" text="Home" />
                   <FooterLink href="/profile" text="About Me" />
-                  <FooterLink href="/projects" text="Case Studies" />
+                  <FooterLink href="/work" text="Case Studies" />
                   <FooterLink href="/contact" text="Get in Touch" />
                 </ul>
               </div>
