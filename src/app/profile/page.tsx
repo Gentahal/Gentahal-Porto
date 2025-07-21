@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FiMail, FiPhone, FiMapPin, FiLinkedin, FiGithub, FiTwitter, FiDownload } from 'react-icons/fi';
 
+
 export default function Profile() {
   const skills = [
     { name: 'UI/UX Design', level: 90 },
@@ -195,8 +196,52 @@ export default function Profile() {
         </section>
 
         {/* Footer - Sama dengan halaman utama */}
-        <footer className="bg-gray-900 text-white py-12">
-          {/* ... */}
+        <footer className="bg-gray-900 text-white pt-24 pb-12">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+              <div className="md:col-span-2">
+                <Link href="/" className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold">GH</span>
+                  </div>
+                  <span className="text-xl font-semibold">Genta Halilintar</span>
+                </Link>
+                <p className="text-gray-400 max-w-md leading-relaxed">
+                  Crafting digital experiences that resonate with users and drive business results through thoughtful design and cutting-edge development.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
+                <ul className="space-y-3">
+                  <FooterLink href="/" text="Home" />
+                  <FooterLink href="/profile" text="About Me" />
+                  <FooterLink href="/work" text="Case Studies" />
+                  <FooterLink href="/contact" text="Get in Touch" />
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-6">Connect</h3>
+                <div className="flex space-x-4 mb-6">
+                  <SocialIcon href="#" icon={<FiLinkedin />} />
+                  <SocialIcon href="#" icon={<FiGithub />} />
+                  <SocialIcon href="#" icon={<FiTwitter />} />
+                  <SocialIcon href="#" icon={<FiMail />} />
+                </div>
+                <p className="text-gray-400">gentahalilintar36@gmail.com</p>
+                <p className="text-gray-400">+62 813 1560 3835</p>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center">
+              <p className="text-gray-500 text-sm">© {new Date().getFullYear()} Genta Halilintar. All rights reserved.</p>
+              <div className="flex space-x-6 mt-4 md:mt-0">
+                <Link href="#" className="text-gray-500 hover:text-gray-300 text-sm transition">Privacy Policy</Link>
+                <Link href="#" className="text-gray-500 hover:text-gray-300 text-sm transition">Terms of Service</Link>
+              </div>
+            </div>
+          </div>
         </footer>
       </div>
     </>
@@ -222,4 +267,21 @@ const SocialIcon = ({ href, icon }: NavLinkProps) => (
   <Link href={href} className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:text-white hover:bg-blue-600 transition">
     {icon}
   </Link>
+);
+
+const NavLink = ({ href, text, active = false }: NavLinkProps) => (
+  <Link href={href} className={`relative px-1 py-2 text-sm font-medium transition ${active ? 'text-blue-600' : 'text-gray-500 hover:text-gray-800'}`}>
+    {text}
+    {active && (
+      <span className="absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></span>
+    )}
+  </Link>
+);
+
+const FooterLink = ({ href, text }: NavLinkProps) => (
+  <li>
+    <Link href={href} className="text-gray-400 hover:text-white transition">
+      {text}
+    </Link>
+  </li>
 );
