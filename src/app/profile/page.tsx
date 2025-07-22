@@ -207,30 +207,46 @@ export default function Profile() {
                   <span className="text-xl font-semibold">Genta Halilintar</span>
                 </Link>
                 <p className="text-gray-400 max-w-md leading-relaxed">
-                  Crafting digital experiences that resonate with users and drive business results through thoughtful design and cutting-edge development.
+                  Fullstack developer specializing in Next.js, Laravel, and mobile development with Jetpack Compose.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
                 <ul className="space-y-3">
-                  <FooterLink href="/" text="Home" />
-                  <FooterLink href="/profile" text="About Me" />
-                  <FooterLink href="/work" text="Case Studies" />
-                  <FooterLink href="/contact" text="Get in Touch" />
+                  <li>
+                    <Link href="/" className="text-gray-400 hover:text-white transition">Home</Link>
+                  </li>
+                  <li>
+                    <Link href="/profile" className="text-gray-400 hover:text-white transition">Profile</Link>
+                  </li>
+                  <li>
+                    <Link href="/work" className="text-gray-400 hover:text-white transition">Projects</Link>
+                  </li>
+                  <li>
+                    <Link href="/contact" className="text-gray-400 hover:text-white transition">Contact</Link>
+                  </li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold mb-6">Connect</h3>
                 <div className="flex space-x-4 mb-6">
-                  <SocialIcon href="#" icon={<FiLinkedin />} />
-                  <SocialIcon href="#" icon={<FiGithub />} />
-                  <SocialIcon href="#" icon={<FiTwitter />} />
-                  <SocialIcon href="#" icon={<FiMail />} />
+                  <Link href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-700 transition">
+                    <FiLinkedin />
+                  </Link>
+                  <Link href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-700 transition">
+                    <FiGithub />
+                  </Link>
+                  <Link href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-700 transition">
+                    <FiTwitter />
+                  </Link>
+                  <Link href="mailto:gentahalilintar36@gmail.com" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-700 transition">
+                    <FiMail />
+                  </Link>
                 </div>
                 <p className="text-gray-400">gentahalilintar36@gmail.com</p>
-                <p className="text-gray-400">+62 813 1560 3835</p>
+                <p className="text-gray-400">+62 813-1560-3835</p>
               </div>
             </div>
 
@@ -238,7 +254,7 @@ export default function Profile() {
               <p className="text-gray-500 text-sm">© {new Date().getFullYear()} Genta Halilintar. All rights reserved.</p>
               <div className="flex space-x-6 mt-4 md:mt-0">
                 <Link href="#" className="text-gray-500 hover:text-gray-300 text-sm transition">Privacy Policy</Link>
-                <Link href="#" className="text-gray-500 hover:text-gray-300 text-sm transition">Terms of Service</Link>
+                <Link href="#" className="text-gray-500 hover:text-gray-300 text-sm transition">Terms</Link>
               </div>
             </div>
           </div>
