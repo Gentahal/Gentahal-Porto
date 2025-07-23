@@ -2,53 +2,95 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FiMail, FiPhone, FiMapPin, FiLinkedin, FiGithub, FiTwitter, FiDownload } from 'react-icons/fi';
-
+import { SiLaravel, SiPhp, SiMysql, SiJavascript, SiBootstrap, SiFirebase, SiKotlin, SiFigma, SiNextdotjs } from 'react-icons/si';
+import { FaGitAlt, FaMobile, FaProjectDiagram } from 'react-icons/fa';
 
 export default function Profile() {
-  const skills = [
-    { name: 'UI/UX Design', level: 90 },
-    { name: 'Frontend Development', level: 85 },
-    { name: 'React', level: 80 },
-    { name: 'Figma', level: 95 }
+  const technicalSkills = [
+    { name: 'Laravel Framework', icon: <SiLaravel className="w-5 h-5 text-red-600" /> },
+    { name: 'PHP', icon: <SiPhp className="w-5 h-5 text-purple-600" /> },
+    { name: 'MySQL', icon: <SiMysql className="w-5 h-5 text-blue-500" /> },
+    { name: 'JavaScript', icon: <SiJavascript className="w-5 h-5 text-yellow-400" /> },
+    { name: 'Bootstrap', icon: <SiBootstrap className="w-5 h-5 text-purple-500" /> },
+    { name: 'Git/GitHub', icon: <FaGitAlt className="w-5 h-5 text-orange-600" /> },
+    { name: 'Firebase', icon: <SiFirebase className="w-5 h-5 text-yellow-500" /> },
+    { name: 'REST API', icon: <FaMobile className="w-5 h-5 text-green-500" /> },
+    { name: 'Jetpack Compose', icon: <FaMobile className="w-5 h-5 text-blue-400" /> },
+    { name: 'Kotlin', icon: <SiKotlin className="w-5 h-5 text-purple-400" /> },
+    { name: 'Agile Scrum', icon: <FaProjectDiagram className="w-5 h-5 text-pink-500" /> },
+    { name: 'Next.JS', icon: <SiNextdotjs className="w-5 h-5 text-black-500" /> }
+  ];
+
+  const softSkills = [
+    'Problem Solving',
+    'Time Management',
+    'Team Collaboration',
+    'Effective Communication',
   ];
 
   const experiences = [
     {
-      role: 'Senior UX Designer',
-      company: 'Tech Innovations Inc.',
-      period: '2020 - Present',
-      description: 'Leading design team to create user-centered digital products for enterprise clients.'
+      role: 'Freelance Fullstack Developer',
+      company: 'Self-Employed',
+      period: 'Oct 2024 - Present',
+      description: 'Delivering tailored web solutions including company profiles and admin systems using Laravel.',
+      highlights: [
+        'Develop responsive company profile websites',
+        'Build robust admin systems with Laravel',
+        'Translate client needs into functional systems',
+        'Implement secure and scalable backends'
+      ]
     },
     {
-      role: 'Product Designer',
-      company: 'Digital Solutions Co.',
-      period: '2017 - 2020',
-      description: 'Designed and prototyped interactive interfaces for web and mobile applications.'
+      role: 'Fullstack Developer',
+      company: 'PT Anugrah Inti Artha Mandiri',
+      period: 'May 2024 - Sep 2024',
+      description: 'Developed healthcare integration system aligned with national standards.',
+      highlights: [
+        'Built patient registration and EMR modules',
+        'Implemented payment and billing systems',
+        'Ensured healthcare data compliance',
+        'Collaborated using GitHub for version control'
+      ]
+    },
+    {
+      role: 'Fullstack Developer',
+      company: 'PT Rahadhyan Integrasi Nusantara',
+      period: 'Jun 2023 - May 2024',
+      description: 'Maintained and enhanced internal ERP system used by 100+ employees.',
+      highlights: [
+        'Resolved critical system bugs with long-lasting fixes',
+        'Developed role & permission management',
+        'Worked in Agile Scrum environment',
+        'Built scouting participant registration system'
+      ]
     }
   ];
 
   const education = [
     {
-      degree: 'Undergraduate of Software Engineer',
+      degree: 'Undergraduate of Software Engineering',
       institution: 'Telkom University',
-      year: '2024 - present'
+      year: '2024 - Present',
+      description: 'Focus on Java programming, algorithms, web/mobile design, and Design Thinking methodology. Active in Mobile Developer Laboratory working with Jetpack Compose and Firebase.'
     },
     {
-      degree: 'Vocational High School',
-      institution: 'SMK IDN Boarding Schoold',
-      year: '2021-2024'
+      degree: 'Vocational High School - Software Engineering',
+      institution: 'SMK IDN Boarding School',
+      year: '2021 - 2024',
+      description: 'Learned Kotlin, Dart, and specialized in backend development with Laravel. Built foundation in both mobile and web technologies.'
     }
   ];
 
   return (
     <>
       <Head>
-        <title>Genta Halilintar | Professional Profile</title>
-        <meta name="description" content="Detailed professional profile and experience" />
+        <title>Genta Halilintar | Fullstack Developer Profile</title>
+        <meta name="description" content="Professional profile of Genta Halilintar - Laravel Fullstack Developer" />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-sans antialiased">
-        {/* Navigation - Sama dengan halaman utama */}
+        {/* Profile Header Section */}
         <nav className="px-6 py-5 bg-white/90 backdrop-blur-lg shadow-sm sticky top-0 z-50 border-b border-gray-100">
           <div className="max-w-7xl mx-auto flex justify-between items-center">
             <Link href="/" className="flex items-center space-x-3 group">
@@ -69,11 +111,9 @@ export default function Profile() {
             </div>
           </div>
         </nav>
-
-        {/* Profil Header */}
         <section className="max-w-7xl mx-auto px-6 py-16">
           <div className="flex flex-col md:flex-row items-start gap-12">
-            {/* Foto Profil & Info Kontak */}
+            {/* Profile Photo & Contact Info */}
             <div className="md:w-1/3 lg:w-1/4">
               <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-xl mb-6">
                 <Image
@@ -107,197 +147,170 @@ export default function Profile() {
                   <FiDownload className="mr-2" />
                   Download CV
                 </a>
-
               </div>
             </div>
 
-            {/* Detail Profil */}
+            {/* Profile Details */}
             <div className="md:w-2/3 lg:w-3/4 space-y-12">
-              {/* Tentang Saya */}
+              {/* About Me */}
               <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Genta Halilintar</h2>
-                <p className="text-lg text-blue-600 font-medium mb-6">Senior UX Designer & Frontend Developer</p>
+                <p className="text-lg text-blue-600 font-medium mb-6">Fullstack Developer (Laravel Specialist)</p>
 
                 <div className="prose max-w-none text-gray-600">
                   <p>
-                    Passionate designer-developer hybrid with 8+ years of experience creating digital products that users love.
-                    Specialized in bridging the gap between design and development to deliver seamless user experiences.
+                    Fullstack Developer with 3+ years of experience building end-to-end web applications using Laravel framework.
+                    Proficient in both frontend (Blade, Bootstrap) and backend (PHP, Laravel) development with expertise in
+                    system architecture design, RESTful API integration, and database management.
                   </p>
                   <p className="mt-4">
-                    My approach combines aesthetic sensibility with technical expertise, ensuring that beautiful designs are
-                    implemented with precision and perform flawlessly across all devices.
+                    Experienced in Agile Scrum environments, working collaboratively in cross-functional teams to deliver
+                    solutions through sprint-based development. Committed to writing clean, maintainable code and continuously
+                    improving application performance and scalability.
                   </p>
+                  {/* <p className="mt-4 font-medium">
+                    Portfolio: <span className="text-blue-600">gentahal.vercel.app</span>
+                  </p> */}
                 </div>
               </div>
 
-              {/* Keahlian */}
+              {/* Technical Skills */}
               <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Skills & Expertise</h3>
-                <div className="space-y-5">
-                  {skills.map((skill, index) => (
-                    <div key={index}>
-                      <div className="flex justify-between mb-1">
-                        <span className="font-medium text-gray-700">{skill.name}</span>
-                        <span className="text-sm text-gray-500">{skill.level}%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full"
-                          style={{ width: `${skill.level}%` }}
-                        ></div>
-                      </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Technical Skills</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {technicalSkills.map((skill, index) => (
+                    <div key={index} className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg">
+                      {skill.icon}
+                      <span className="font-medium text-gray-700">{skill.name}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Pengalaman Kerja */}
+              {/* Soft Skills */}
+              <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Soft Skills</h3>
+                <div className="flex flex-wrap gap-3">
+                  {softSkills.map((skill, index) => (
+                    <div key={index} className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full">
+                      {skill}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Work Experience */}
               <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Professional Experience</h3>
                 <div className="space-y-8">
                   {experiences.map((exp, index) => (
-                    <div key={index} className="relative pl-8 pb-8 border-l-2 border-blue-100 last:pb-0 last:border-l-0 group">
-                      <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 top-1 group-hover:scale-125 transition-transform"></div>
-                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                        <div>
-                          <h4 className="text-xl font-semibold text-gray-800">{exp.role}</h4>
-                          <p className="text-blue-600">{exp.company}</p>
-                        </div>
-                        <span className="mt-1 sm:mt-0 px-3 py-1 bg-blue-50 text-blue-600 text-sm rounded-full">{exp.period}</span>
-                      </div>
-                      <p className="mt-3 text-gray-600">{exp.description}</p>
-                    </div>
+                    <ExperienceItem 
+                      key={index}
+                      role={exp.role}
+                      company={exp.company}
+                      period={exp.period}
+                      description={exp.description}
+                      highlights={exp.highlights}
+                    />
                   ))}
                 </div>
               </div>
 
-              {/* Pendidikan */}
+              {/* Education */}
               <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Education</h3>
                 <div className="space-y-6">
                   {education.map((edu, index) => (
-                    <div key={index} className="flex items-start">
-                      <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
-                        <div className="w-8 h-8 bg-blue-100 rounded-md flex items-center justify-center">
-                          <span className="text-blue-600 font-bold">{edu.year.split('')[2]}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-semibold text-gray-800">{edu.degree}</h4>
-                        <p className="text-gray-600">{edu.institution}</p>
-                        <p className="text-sm text-gray-500 mt-1">{edu.year}</p>
-                      </div>
-                    </div>
+                    <EducationItem
+                      key={index}
+                      degree={edu.degree}
+                      institution={edu.institution}
+                      year={edu.year}
+                      description={edu.description}
+                    />
                   ))}
                 </div>
               </div>
             </div>
           </div>
         </section>
-
-        {/* Footer - Sama dengan halaman utama */}
-        <footer className="bg-gray-900 text-white pt-24 pb-12">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-              <div className="md:col-span-2">
-                <Link href="/" className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold">GH</span>
-                  </div>
-                  <span className="text-xl font-semibold">Genta Halilintar</span>
-                </Link>
-                <p className="text-gray-400 max-w-md leading-relaxed">
-                  Fullstack developer specializing in Next.js, Laravel, and mobile development with Jetpack Compose.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
-                <ul className="space-y-3">
-                  <li>
-                    <Link href="/" className="text-gray-400 hover:text-white transition">Home</Link>
-                  </li>
-                  <li>
-                    <Link href="/profile" className="text-gray-400 hover:text-white transition">Profile</Link>
-                  </li>
-                  <li>
-                    <Link href="/work" className="text-gray-400 hover:text-white transition">Projects</Link>
-                  </li>
-                  <li>
-                    <Link href="/contact" className="text-gray-400 hover:text-white transition">Contact</Link>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-6">Connect</h3>
-                <div className="flex space-x-4 mb-6">
-                  <Link href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-700 transition">
-                    <FiLinkedin />
-                  </Link>
-                  <Link href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-700 transition">
-                    <FiGithub />
-                  </Link>
-                  <Link href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-700 transition">
-                    <FiTwitter />
-                  </Link>
-                  <Link href="mailto:gentahalilintar36@gmail.com" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-700 transition">
-                    <FiMail />
-                  </Link>
-                </div>
-                <p className="text-gray-400">gentahalilintar36@gmail.com</p>
-                <p className="text-gray-400">+62 813-1560-3835</p>
-              </div>
-            </div>
-
-            <div className="border-t border-gray-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-500 text-sm">© {new Date().getFullYear()} Genta Halilintar. All rights reserved.</p>
-              <div className="flex space-x-6 mt-4 md:mt-0">
-                <Link href="#" className="text-gray-500 hover:text-gray-300 text-sm transition">Privacy Policy</Link>
-                <Link href="#" className="text-gray-500 hover:text-gray-300 text-sm transition">Terms</Link>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     </>
   );
 }
 
-type NavLinkProps = {
-  href: string;
-  text?: string;
-  active?: boolean;
-  icon?: React.ReactNode;
-};
+// Experience Item Component
+function ExperienceItem({ role, company, period, description, highlights }: {
+  role: string;
+  company: string;
+  period: string;
+  description: string;
+  highlights: string[];
+}) {
+  return (
+    <div className="relative pl-8 pb-8 border-l-2 border-blue-100 last:pb-0 last:border-l-0 group">
+      <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-2 top-1 group-hover:scale-125 transition-transform"></div>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+        <div>
+          <h4 className="text-xl font-semibold text-gray-800">{role}</h4>
+          <p className="text-blue-600">{company}</p>
+        </div>
+        <span className="mt-1 sm:mt-0 px-3 py-1 bg-blue-50 text-blue-600 text-sm rounded-full">{period}</span>
+      </div>
+      <p className="mt-3 text-gray-600">{description}</p>
+      <ul className="mt-3 space-y-2 list-disc list-inside">
+        {highlights.map((highlight, i) => (
+          <li key={i} className="text-gray-600">{highlight}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
-// Komponen Tambahan
-const ContactItem = ({ icon, text }: NavLinkProps) => (
-  <li className="flex items-center space-x-3">
-    <span className="text-gray-500">{icon}</span>
-    <span className="text-gray-700">{text}</span>
-  </li>
-);
+// Education Item Component
+function EducationItem({ degree, institution, year, description }: {
+  degree: string;
+  institution: string;
+  year: string;
+  description: string;
+}) {
+  return (
+    <div className="flex items-start">
+      <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
+        <div className="w-8 h-8 bg-blue-100 rounded-md flex items-center justify-center">
+          <span className="text-blue-600 text-xs font-bold">{year.split('-')[0]}</span>
+        </div>
+      </div>
+      <div>
+        <h4 className="text-lg font-semibold text-gray-800">{degree}</h4>
+        <p className="text-gray-600">{institution}</p>
+        <p className="text-sm text-gray-500 mt-1">{year}</p>
+        <p className="mt-2 text-gray-600">{description}</p>
+      </div>
+    </div>
+  );
+}
 
-const SocialIcon = ({ href, icon }: NavLinkProps) => (
-  <Link href={href} className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:text-white hover:bg-blue-600 transition">
-    {icon}
-  </Link>
-);
+// Contact Item Component
+function ContactItem({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <li className="flex items-center space-x-3">
+      <span className="text-gray-500">{icon}</span>
+      <span className="text-gray-700">{text}</span>
+    </li>
+  );
+}
 
-const NavLink = ({ href, text, active = false }: NavLinkProps) => (
-  <Link href={href} className={`relative px-1 py-2 text-sm font-medium transition ${active ? 'text-blue-600' : 'text-gray-500 hover:text-gray-800'}`}>
-    {text}
-    {active && (
-      <span className="absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></span>
-    )}
-  </Link>
-);
-
-const FooterLink = ({ href, text }: NavLinkProps) => (
-  <li>
-    <Link href={href} className="text-gray-400 hover:text-white transition">
-      {text}
+// Social Icon Component
+function SocialIcon({ href, icon }: { href: string; icon: React.ReactNode }) {
+  return (
+    <Link 
+      href={href} 
+      className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:text-white hover:bg-blue-600 transition"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {icon}
     </Link>
-  </li>
-);
+  );
+}
