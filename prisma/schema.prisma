@@ -18,7 +18,7 @@ model Porto {
   title       String
   description String
   tags        String[] // array of string
-  image       String
+  image       String[] 
   link        String?
   github      String?
   year        String

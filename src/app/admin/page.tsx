@@ -1,239 +1,314 @@
-'use client'
+"use client";
 
-import { useState } from 'react';
-import { FiSave, FiLink, FiGithub, FiImage, FiCalendar, FiTag, FiType } from 'react-icons/fi';
-import { FiAlertCircle } from 'react-icons/fi';
+import { useState, useRef } from "react";
 
-export default function AdminPage() {
-  const [form, setForm] = useState({
-    title: '',
-    description: '',
-    tags: '',
-    image: '',
-    link: '',
-    github: '',
-    year: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+export default function AddPortoPage() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [year, setYear] = useState("");
+  const [link, setLink] = useState("");
+  const [github, setGithub] = useState("");
+  const [images, setImages] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [tagInput, setTagInput] = useState("");
+  const [notification, setNotification] = useState<{type: string, message: string} | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!form.title) newErrors.title = 'Judul wajib diisi';
-    if (!form.description) newErrors.description = 'Deskripsi wajib diisi';
-    if (!form.image) newErrors.image = 'Gambar wajib diisi';
-    if (!form.year) newErrors.year = 'Tahun wajib diisi';
-    if (form.year && !/^\d{4}$/.test(form.year)) newErrors.year = 'Format tahun tidak valid';
-    if (form.image && !/^https?:\/\/.+/.test(form.image)) newErrors.image = 'URL gambar tidak valid';
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
+  const showNotification = (type: string, message: string) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 5000);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validate()) return;
-    
-    setIsSubmitting(true);
-    
+    setLoading(true);
+
     try {
-      const res = await fetch('/api/porto', {
-        method: 'POST',
-        body: JSON.stringify({
-          ...form,
-          tags: form.tags.split(',').map(tag => tag.trim()),
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("tags", JSON.stringify(tags));
+      formData.append("year", year);
+      formData.append("link", link);
+      formData.append("github", github);
+
+      images.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      const res = await fetch("/api/porto", {
+        method: "POST",
+        body: formData,
       });
 
       const data = await res.json();
+      console.log("Response:", data);
 
       if (data.success) {
-        alert('✅ Portfolio berhasil ditambahkan');
-        setForm({
-          title: '',
-          description: '',
-          tags: '',
-          image: '',
-          link: '',
-          github: '',
-          year: '',
-        });
+        showNotification("success", "Project berhasil diupload!");
+        // Reset form
+        setTitle("");
+        setDescription("");
+        setTags([]);
+        setYear("");
+        setLink("");
+        setGithub("");
+        setImages([]);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       } else {
-        alert(`❌ Gagal menambahkan portfolio: ${data.message || 'Unknown error'}`);
+        showNotification("error", "Gagal upload: " + data.message);
       }
-    } catch (error) {
-      alert('❌ Terjadi kesalahan jaringan');
+    } catch (err) {
+      console.error(err);
+      showNotification("error", "Terjadi error saat mengupload project");
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
+    }
+  };
+
+  const handleTagInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const value = tagInput.trim();
+      if (value && !tags.includes(value)) {
+        setTags([...tags, value]);
+        setTagInput("");
+      }
+    }
+  };
+
+  const removeTag = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
+  const removeImage = (index: number) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files);
+      // Check if total files would exceed 5
+      if (images.length + newFiles.length > 5) {
+        showNotification("error", "Maksimal 5 gambar yang diizinkan");
+        return;
+      }
+      setImages([...images, ...newFiles]);
+    }
+  };
+
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-        <div className="p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-800">Tambah Portfolio Baru</h1>
-            <p className="text-gray-600">Isi detail proyek Anda</p>
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
+          <h1 className="text-2xl font-bold">Tambah Project Baru</h1>
+          <p className="text-blue-100 mt-1">Isi detail project portfolio Anda</p>
+        </div>
+        
+        {notification && (
+          <div className={`mx-6 mt-6 p-4 rounded-lg ${
+            notification.type === "success" 
+              ? "bg-green-100 text-green-700 border border-green-200" 
+              : "bg-red-100 text-red-700 border border-red-200"
+          }`}>
+            {notification.message}
+          </div>
+        )}
+        
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Judul Project <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Masukkan judul project"
+              className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
           </div>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Judul Proyek</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiType className="text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  name="title"
-                  value={form.title}
-                  onChange={handleChange}
-                  placeholder="Contoh: Aplikasi E-Commerce"
-                  className={`block w-full pl-10 pr-3 py-2 border ${errors.title ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                />
-              </div>
-              {errors.title && <p className="mt-1 text-sm text-red-600 flex items-center"><FiAlertCircle className="mr-1" /> {errors.title}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
-              <textarea
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                rows={4}
-                placeholder="Jelaskan tentang proyek ini..."
-                className={`block w-full px-3 py-2 border ${errors.description ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-              />
-              {errors.description && <p className="mt-1 text-sm text-red-600 flex items-center"><FiAlertCircle className="mr-1" /> {errors.description}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Tags</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiTag className="text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  name="tags"
-                  value={form.tags}
-                  onChange={handleChange}
-                  placeholder="Contoh: React, Next.js, Tailwind"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              <p className="mt-1 text-xs text-gray-500">Pisahkan dengan koma</p>
-            </div>
-
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">URL Gambar</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiImage className="text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  name="image"
-                  value={form.image}
-                  onChange={handleChange}
-                  placeholder="Contoh: https://example.com/image.jpg"
-                  className={`block w-full pl-10 pr-3 py-2 border ${errors.image ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                />
-              </div>
-              {errors.image && <p className="mt-1 text-sm text-red-600 flex items-center"><FiAlertCircle className="mr-1" /> {errors.image}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">URL Proyek (Opsional)</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLink className="text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  name="link"
-                  value={form.link}
-                  onChange={handleChange}
-                  placeholder="Contoh: https://example.com"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">URL GitHub (Opsional)</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiGithub className="text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  name="github"
-                  value={form.github}
-                  onChange={handleChange}
-                  placeholder="Contoh: https://github.com/user/repo"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Tahun</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiCalendar className="text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  name="year"
-                  value={form.year}
-                  onChange={handleChange}
-                  placeholder="Contoh: 2023"
-                  className={`block w-full pl-10 pr-3 py-2 border ${errors.year ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                />
-              </div>
-              {errors.year && <p className="mt-1 text-sm text-red-600 flex items-center"><FiAlertCircle className="mr-1" /> {errors.year}</p>}
-            </div>
-
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Deskripsi <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              placeholder="Jelaskan detail project Anda"
+              rows={4}
+              className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${isSubmitting ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
-              >
-                {isSubmitting ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Menyimpan...
-                  </>
-                ) : (
-                  <>
-                    <FiSave className="mr-2" />
-                    Simpan Portfolio
-                  </>
-                )}
-              </button>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Tahun <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                min="2000"
+                max="2030"
+                placeholder="2024"
+                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                required
+              />
             </div>
-          </form>
-        </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Link Project
+              </label>
+              <input
+                type="url"
+                placeholder="https://example.com"
+                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
+              />
+            </div>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Repository GitHub
+            </label>
+            <input
+              type="url"
+              placeholder="https://github.com/username/repo"
+              className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={github}
+              onChange={(e) => setGithub(e.target.value)}
+            />
+          </div>
+
+          {/* Tags */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Tags
+            </label>
+            <input
+              type="text"
+              placeholder="Tambahkan tag (tekan Enter atau koma untuk menambah)"
+              className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={handleTagInput}
+            />
+            <div className="flex flex-wrap gap-2 mt-3">
+              {tags.map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-sm flex items-center"
+                >
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => removeTag(idx)}
+                    className="ml-2 text-blue-500 hover:text-blue-700"
+                  >
+                    &times;
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Images */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Gambar Project (Maksimal 5)
+            </label>
+            
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+              ref={fileInputRef}
+              className="hidden"
+            />
+            
+            <button
+              type="button"
+              onClick={triggerFileInput}
+              disabled={images.length >= 5}
+              className="w-full border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <div className="flex flex-col items-center justify-center text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                <p>Klik untuk upload gambar atau drag & drop</p>
+                <p className="text-sm mt-1">Maksimal 5 file</p>
+              </div>
+            </button>
+            
+            {images.length > 0 && (
+              <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                {images.map((file, idx) => (
+                  <div key={idx} className="relative border rounded-lg p-2">
+                    <button
+                      type="button"
+                      onClick={() => removeImage(idx)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                    >
+                      &times;
+                    </button>
+                    <div className="h-20 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
+                      {file.type.startsWith("image/") ? (
+                        <img 
+                          src={URL.createObjectURL(file)} 
+                          alt={file.name} 
+                          className="object-cover h-full w-full"
+                        />
+                      ) : (
+                        <span className="text-xs text-gray-500 p-2 truncate">{file.name}</span>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 truncate">{file.name}</p>
+                    <p className="text-xs text-gray-400">{(file.size / 1024).toFixed(1)} KB</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="pt-4">
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Uploading...
+                </span>
+              ) : (
+                "Upload Project"
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
