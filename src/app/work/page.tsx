@@ -8,7 +8,7 @@ import { FiExternalLink, FiGithub, FiArrowRight, FiLinkedin, FiTwitter, FiMail }
 export default async function WorkPage() {
     const projects = await prisma.porto.findMany({
         orderBy: { year: 'desc' },
-    }).then(projects => projects.map(project => ({
+    }).then((projects: { image: any; link: null; github: null; }[]) => projects.map((project: { image: any; link: null; github: null; }) => ({
         ...project,
         image: Array.isArray(project.image) ? project.image : [project.image],
         link: project.link === null ? undefined : project.link,
@@ -24,7 +24,7 @@ export default async function WorkPage() {
 
                 <section className="max-w-7xl mx-auto px-6 py-16">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {projects.map((project) => (
+                        {projects.map((project: any) => (
                             <ProjectCard key={project.id} project={project} />
                         ))}
                     </div>

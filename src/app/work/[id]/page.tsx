@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
+import { Key } from "react";
 import { FaGithub, FaExternalLinkAlt, FaCalendarAlt, FaArrowLeft, FaTag } from "react-icons/fa";
 
 interface PageProps {
@@ -99,7 +101,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               Galeri Project
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {images.map((img, idx) => (
+              {images.map((img: string | StaticImport, idx: Key | null | undefined) => (
                 <div
                   key={idx}
                   className="relative w-full h-80 rounded-xl overflow-hidden group"

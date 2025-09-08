@@ -33,7 +33,12 @@ export default function AdminLogin() {
       // Redirect ke halaman admin setelah login berhasil
       router.push('/admin')
     } catch (err) {
-      setError(err.message || 'Terjadi kesalahan saat login')
+      // Type checking untuk error
+      if (err instanceof Error) {
+        setError(err.message || 'Terjadi kesalahan saat login')
+      } else {
+        setError('Terjadi kesalahan saat login')
+      }
     } finally {
       setIsLoading(false)
     }
