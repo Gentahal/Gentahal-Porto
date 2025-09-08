@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaExternalLinkAlt, FaCalendarAlt, FaArrowLeft, FaTag } from "react-icons/fa";
 
-export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
+export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
 
     function Navigation() {
         return (
@@ -31,8 +31,9 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         );
     }
 
+    const { id } = await params; // <- harus di-await
     const project = await prisma.porto.findUnique({
-        where: { id: Number(params.id) },
+        where: { id: Number(id) },
     });
 
     if (!project) {
@@ -57,8 +58,8 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-            <Navigation/>
-            
+            <Navigation />
+
             {/* <div className="max-w-6xl mx-auto px-6 pt-8">
                 <Link
                     href="/work"
