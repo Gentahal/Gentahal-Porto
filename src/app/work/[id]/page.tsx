@@ -4,13 +4,14 @@ import Link from "next/link";
 import { FaGithub, FaExternalLinkAlt, FaCalendarAlt, FaArrowLeft, FaTag } from "react-icons/fa";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ProjectDetailPage({ params }: PageProps) {
-  const { id } = params; // ⚡ langsung object, tidak di-await
+  // ⚡ Await params terlebih dahulu
+  const { id } = await params;
 
   const project = await prisma.porto.findUnique({
     where: { id: Number(id) },
